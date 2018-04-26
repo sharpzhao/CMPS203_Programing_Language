@@ -1,0 +1,172 @@
+%%% Template originaly created by Karol Kozioł (mail@karol-koziol.net) and modified for ShareLaTeX use
+
+\documentclass[a4paper,11pt,fleqn]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+\usepackage{tgtermes}
+\usepackage{bussproofs}
+\usepackage{blindtext}
+
+\usepackage[
+pdftitle={CMPS 242-HM2}, 
+pdfauthor={jianfeng},
+colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue,bookmarks=true,
+bookmarksopenlevel=2]{hyperref}
+\usepackage{amsmath,amssymb,amsthm,textcomp}
+\usepackage{enumerate}
+\usepackage{multicol}
+\usepackage{tikz}
+
+\usepackage{geometry}
+\geometry{total={210mm,297mm},
+left=25mm,right=25mm,%
+bindingoffset=0mm, top=20mm,bottom=20mm}
+
+
+\linespread{1.3}
+
+\newcommand{\linia}{\rule{\linewidth}{0.5pt}}
+
+% custom theorems if needed
+\newtheoremstyle{mytheor}
+    {1ex}{1ex}{\normalfont}{0pt}{\scshape}{.}{1ex}
+    {{\thmname{#1 }}{\thmnumber{#2}}{\thmnote{ (#3)}}}
+
+\theoremstyle{mytheor}
+\newtheorem{defi}{Definition}
+
+% my own titles
+\makeatletter
+\renewcommand{\maketitle}{
+\begin{center}
+\vspace{2ex}
+{\huge \textsc{\@title}}
+\vspace{1ex}
+\\
+\linia\\
+\@author \hfill \@date
+\vspace{4ex}
+\end{center}
+}
+\makeatother
+%%%
+
+% custom footers and headers
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{}
+\lfoot{JIANFENG ZHAO}
+\cfoot{ \thepage}
+\rfoot{HM3}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+%
+
+%%%----------%%%----------%%%----------%%%----------%%%
+
+\begin{document}
+
+\title{CMPS 203 -- HM3}
+
+\author{NAME: Jianfeng Zhao, CruzID: jzhao65}
+
+\date{25/04/2018}
+
+\maketitle
+
+
+
+
+\subsection*{Quetiion 1}
+$Question.$ In the $\mathrm{WHILE}$ language, prove or disprove the equivalence of the two commands:\\
+$$\mathrm{t} := \mathrm{x};\mathrm{x} := \mathrm{y};\mathrm{y} := \mathrm{t};$$
+and\\
+$$\mathrm{t} := \mathrm{y};\mathrm{y} := \mathrm{x};\mathrm{x} := \mathrm{t};$$
+$Proof.$ we define the first commands as $\mathrm{C}_1$ and the second commands as $\mathrm{C}_2$. Hence, the two commands are equivalence only if \\
+$$\langle \mathrm{C}_1, s \rangle \to s' and\  \langle \mathrm{c}_2, s \rangle \to s'$$
+However, we assume $s$ is $s[t: t_0, x: x_0, y: y_0]$.\\
+It easy to get the first commands $\langle \mathrm{C}_1, s \rangle  \to s'[t:x_0, x: y_0, y: x_0]$.\\
+But the second commands' state is $\langle \mathrm{C}_2, s \rangle  \to s''[t:y_0, x: y_0, y: x_0]$.\\
+Hence, $s' \ne s'' \Rightarrow \mathrm{C_1} \ne \mathrm{C_2}$\\
+As a result, we disprove the semanticlly equivalent of these two commands. \\
+
+\subsection*{Quetiion 2}
+$Question.$ In the $\mathrm{WHILE}$ , prove that if\\
+$$ \langle \mathrm{while\ b\ do\ y} := \mathrm{y} - \mathrm{x}, \mathrm{s} \rangle \ \Downarrow \mathrm{s'}$$
+then there exists an integer $k$ such that\\
+$$s(y) = s'(y) + k\ *\ s(x)$$
+Please make it explicit if/when you reason by induction on derivations, stating your induction hypothesis.\\
+\\
+$Proof.$ We assume the command always terminate. we prove the command with induction.\\
+\\
+\begin{itemize}
+\item Base Case: $p(0)$ means this while run zero times. we have
+\begin{prooftree}
+	\AxiomC{$\langle b, s \rangle \Downarrow \mathrm{false}$}
+	\AxiomC{$\langle skip, s \rangle \Downarrow \ s'$}
+	\BinaryInfC{$\langle \mathrm{while\ b\ do\ y}\ :=\ \mathrm{y\ -\ x}, s \rangle \Downarrow s'$}
+\end{prooftree}
+It's easy to see $s(y) = s'(y) + 0 \times s(x)$\\
+\\
+\item We assume p(n) means while run n loops and we have
+$$ s(y) = s'(y) + n \times s(x)$$
+We need to prove $p(n + 1)$ which is $\langle while\ b\ do\ y\ :=\ y\ -\ x, s \rangle \Downarrow s'$ we have
+$$ s(y) = s''(y) + (n + 1) \times s(x)$$
+\item We can build the derivation tree as blow
+\begin{prooftree}
+	\AxiomC{$\langle b, s \rangle \Downarrow \mathrm{true}$}
+	\AxiomC{$\langle \mathrm{while\ b\ do\ y}\ :=\ \mathrm{y\ -\ x}, s \rangle \Downarrow s'$}
+	\AxiomC{$\langle \mathrm{y := y\ - \ x}, s' \rangle \Downarrow s''$}
+	\TrinaryInfC{$\langle \mathrm{while\ b\ do\ y}\ :=\ \mathrm{y\ -\ x}, s' \rangle \Downarrow s''$}
+\end{prooftree}
+by induction hypothiesi, we know that\\
+$$s(y) = s'(y) + n \times s(x)$$
+we also know the derivation tree about $p(n + 1)$ that
+$$s'(y) = s''(y) + s(x)$$
+Because of $\langle \mathrm{y := y\ - \ x}, s' \rangle \Downarrow s''$, Hence, we have
+\begin{equation}
+\begin{split}
+s(y) &= s'(y) + n \times s(x)\\
+&= s''(y) + x + n\times s(x)\\
+&= s''(y) + (n + 1) \times s(x)
+\nonumber
+\end{split}
+\end{equation}
+\end{itemize}
+Hence, the statement is proved. 
+\subsection*{Quetiion 3}
+$Question.$ In the $\mathrm{WHILE}$ , prove 
+$$\forall c_1, c_2, c_3\  .\ c_1;(c_2;c_3)\ \approx \ (c_1;c_2);c_3$$
+\\
+$Prove.$ We assume 
+$$\langle c_1, s_0 \rangle \Downarrow s_1$$
+$$\langle c_2, s_1 \rangle \Downarrow s_2$$
+$$\langle c_3, s_2 \rangle \Downarrow s_3$$
+We have derivation tree of right part. 
+\begin{prooftree}
+	\AxiomC{$\langle c_1, s_0 \rangle \Downarrow s_1$}
+	\AxiomC{$\langle c_2, s_1 \rangle \Downarrow s_2$}
+	\BinaryInfC{$\langle c_1;c_2, s_0 \rangle \Downarrow s_2$}
+	\AxiomC{$\langle c_3, s_2 \rangle \Downarrow s_3$}
+	\BinaryInfC{$\langle (c_1;c_2);c_3,s_0 \rangle \Downarrow s_3$}
+\end{prooftree}
+derivation tree of left part.
+\begin{prooftree}
+	\AxiomC{$\langle c_1, s_0 \rangle \Downarrow s_1$}
+	\AxiomC{$\langle c_2, s_1 \rangle \Downarrow s_2$}
+	\AxiomC{$\langle c_3, s_2 \rangle \Downarrow s_3$}
+	\BinaryInfC{$\langle c_2;c_3, s_1 \rangle \Downarrow s_3$}
+	\BinaryInfC{$\langle c_1;(c_2;c_3),s_0 \rangle \Downarrow s_3$}
+\end{prooftree}
+Hence we have 
+$$\langle (c_1;c_2);c_3, s_0 \rangle \Downarrow s_3$$
+$$\langle c_1;(c_2;c_3), s_0 \rangle \Downarrow s_3$$
+Hence, we prove that 
+$$\forall c_1, c_2, c_3\  .\ c_1;(c_2;c_3)\ \approx \ (c_1;c_2);c_3$$
+\end{document}
