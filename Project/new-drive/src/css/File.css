@@ -1,0 +1,13 @@
+.file-style {
+    font-size: 40px;
+    color: #888;
+}
+
+.new-drive-file {
+    display: inline-block;
+    margin: 15px 25px;
+}
+
+.new-drive-file-name {
+    text-align: center;
+}
