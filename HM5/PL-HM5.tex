@@ -1,0 +1,134 @@
+%%% Template originaly created by Karol Kozioł (mail@karol-koziol.net) and modified for ShareLaTeX use
+
+\documentclass[a4paper,11pt,fleqn]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+\usepackage{tgtermes}
+\usepackage{bussproofs}
+\usepackage{blindtext}
+
+\usepackage[
+pdftitle={CMPS 203-HM5}, 
+pdfauthor={jianfeng},
+colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue,bookmarks=true,
+bookmarksopenlevel=2]{hyperref}
+\usepackage{amsmath,amssymb,amsthm,textcomp}
+\usepackage{enumerate}
+\usepackage{multicol}
+\usepackage{tikz}
+
+\usepackage{geometry}
+\geometry{total={210mm,297mm},
+left=25mm,right=25mm,%
+bindingoffset=0mm, top=20mm,bottom=20mm}
+
+
+\linespread{1.3}
+
+\newcommand{\linia}{\rule{\linewidth}{0.5pt}}
+
+% custom theorems if needed
+\newtheoremstyle{mytheor}
+    {1ex}{1ex}{\normalfont}{0pt}{\scshape}{.}{1ex}
+    {{\thmname{#1 }}{\thmnumber{#2}}{\thmnote{ (#3)}}}
+
+\theoremstyle{mytheor}
+\newtheorem{defi}{Definition}
+
+% my own titles
+\makeatletter
+\renewcommand{\maketitle}{
+\begin{center}
+\vspace{2ex}
+{\huge \textsc{\@title}}
+\vspace{1ex}
+\\
+\linia\\
+\@author \hfill \@date
+\vspace{4ex}
+\end{center}
+}
+\makeatother
+%%%
+
+% custom footers and headers
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{}
+\lfoot{JIANFENG ZHAO}
+\cfoot{ \thepage}
+\rfoot{HM5}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+%
+
+%%%----------%%%----------%%%----------%%%----------%%%
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist 
+\begin{document}
+
+\title{CMPS 203 -- HM5}
+
+\author{NAME: Jianfeng Zhao, CruzID: jzhao65}
+
+\date{10/05/2018}
+
+\maketitle
+
+
+
+
+\section*{$Quetiion 1.$}
+Using Hoare’s rules, prove:
+$$\{ x = y \}\ x:=x+1;\ y:=y+1\ \{x=y\}  $$
+$Proof.$ We can get this by Sequence Rule and Assign Rule.
+\begin{prooftree}
+	\AxiomC{$x=y \Rightarrow x + 1 = y + 1$}
+	\AxiomC{$\{x + 1 = y + 1\}x:=x+1\{x = y + 1\}$}
+	\AxiomC{$\{x = y + 1\}y:=y+1\{x = y\}$}
+	\BinaryInfC{$\{x+1=y+1\}\ x:=x+1;\ y:=y+1\ \{x=y\}$}
+	\BinaryInfC{$\{ x = y \}\ x:=x+1;\ y:=y+1\ \{x=y\}$}
+\end{prooftree}
+\section*{$Quetiion 2.$}
+Using Hoare’s rules, prove:
+$$\{y=z\}while\ b\ do\ y:=y-x\ \{\exists k.z=(y+k*x) \}$$
+for an arbitrary boolean expression b.\\
+$Proof.$ 
+\begin{itemize}
+\item(1) For the Precondition, It's easy to proof by Consequence Rule\\
+\begin{prooftree}
+	\AxiomC{\{$y = z\} \Rightarrow \{z = y + 0 * x\}$}
+	\AxiomC{$\{z = y + 0 * x\} \Rightarrow \{\exists k.z=(y+k*x)\} $}
+	\BinaryInfC{$\{y = z\} \Rightarrow \{\exists k.z=(y+k*x)\}$}
+\end{prooftree}
+\item(2) Otherwise, we can get below by Assign Rule and Sequence Rule.\\
+\begin{changemargin}{-1cm}{0cm}
+\begin{prooftree}
+	\AxiomC{$\{\exists k.z = y - x + k * x\} \Rightarrow \{\exists k.z = y + (k-1) * x\} $}
+	\AxiomC{$\{\exists k.z = y - x + k * x\} y:=y - x \{\exists k. z = y + k * x\}$}
+	\BinaryInfC{$\{\exists k.z = y + (k-1) * x\} y:=y - x\{\exists k. z = (y + k * x)\}$}
+\end{prooftree}
+\begin{prooftree}
+	\AxiomC{$\{\exists k.z = y + (k-1) * x\} \Rightarrow \{\exists k.z = y + k * x\} $}
+	\AxiomC{$\{\exists k.z = y + (k-1) * x\} y:=y - x \{\exists k. z = y + k * x\}$}
+	\BinaryInfC{$\{\exists k.z = (y + k * x)\} y:=y - x\{\exists k. z = (y + k * x)\}$}
+\end{prooftree}
+\end{changemargin}
+\item(3) From (1) and (2) and While Loop Rule and Consequence Rule, we can get\\
+\begin{prooftree}
+\AxiomC{$\{y = z\} \Rightarrow \{\exists k.z=(y+k*x)\}$}
+\AxiomC{$\{\exists k.z = (y + k * x)\} y:=y - x \{\exists k.z=(y+k*x)\}$}
+\BinaryInfC{$\{y = z\}y:=y - x \{\exists k.z=(y+k*x)\}$}
+\UnaryInfC{$\{y=z\}while\ b\ do\ y:=y-x\ \{\exists k.z=(y+k*x) \}$}
+\end{prooftree}
+\end{itemize}
+Hence, $\{y=z\}while\ b\ do\ y:=y-x\ \{\exists k.z=(y+k*x) \}$. for an arbitrary boolean expression b.\\
+
+
+\end{document}

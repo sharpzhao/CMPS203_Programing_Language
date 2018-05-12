@@ -3,7 +3,8 @@ import App from './App';
 import { DriveSetTree } from './actions';
 
 const mapStateToProps = state => ({
-    drive: state.drive
+    drive: state.drive,
+    loginStatus: state.login
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

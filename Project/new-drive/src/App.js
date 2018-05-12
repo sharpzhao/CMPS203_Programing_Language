@@ -4,6 +4,7 @@ import './App.css';
 import { Menu, Icon } from 'antd';
 import File from './components/File';
 import { FILE_TYPE } from './constants/const';
+import { Redirect } from 'react-router-dom';
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -18,7 +19,6 @@ class App extends React.Component {
       current: e.key,
     });
   }
-
   mapFileToIcons() {
     return this.props.drive.tree.map((item, idx) => {
       return <File 
@@ -29,7 +29,8 @@ class App extends React.Component {
     })
   }
   render() {
-    return (
+  console.log(this.props)
+    return this.props.loginStatus ? (
       <div>
         <Menu
           onClick={this.handleClick}
@@ -46,7 +47,7 @@ class App extends React.Component {
           }
         </div>
       </div>
-    );
+    ) : <Redirect to = "/login" />;
   }
 }
 
