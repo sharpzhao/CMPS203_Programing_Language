@@ -100,23 +100,25 @@ $Proof.$
 	\BinaryInfC{$\{y = z\} \Rightarrow \{\exists k.z=(y+k*x)\}$}
 \end{prooftree}
 \item(2) Otherwise, we can get below by Assign Rule and Sequence Rule.\\
-\begin{changemargin}{-1cm}{0cm}
+\begin{changemargin}{-2cm}{0cm}
 \begin{prooftree}
 	\AxiomC{$\{\exists k.z = y - x + k * x\} \Rightarrow \{\exists k.z = y + (k-1) * x\} $}
-	\AxiomC{$\{\exists k.z = y - x + k * x\} y:=y - x \{\exists k. z = y + k * x\}$}
-	\BinaryInfC{$\{\exists k.z = y + (k-1) * x\} y:=y - x\{\exists k. z = (y + k * x)\}$}
+	\AxiomC{$\{(\exists k.z = y - x + k * x) \land b\} y:=y - x \{\exists k. z = y + k * x\}$}
+	\BinaryInfC{$\{(\exists k.z = y + (k-1) * x) \land b\} y:=y - x\{\exists k. z = (y + k * x)\}$}
 \end{prooftree}
+\end{changemargin}
+\begin{changemargin}{-1.5cm}{0cm}
 \begin{prooftree}
 	\AxiomC{$\{\exists k.z = y + (k-1) * x\} \Rightarrow \{\exists k.z = y + k * x\} $}
-	\AxiomC{$\{\exists k.z = y + (k-1) * x\} y:=y - x \{\exists k. z = y + k * x\}$}
-	\BinaryInfC{$\{\exists k.z = (y + k * x)\} y:=y - x\{\exists k. z = (y + k * x)\}$}
+	\AxiomC{$\{(\exists k.z = y + (k-1) * x)\land b\} y:=y - x \{\exists k. z = y + k * x\}$}
+	\BinaryInfC{$\{(\exists k.z = (y + k * x))\land b\} y:=y - x\{\exists k. z = (y + k * x)\}$}
 \end{prooftree}
 \end{changemargin}
 \item(3) From (1) and (2) and While Loop Rule and Consequence Rule, we can get\\
 \begin{prooftree}
 \AxiomC{$\{y = z\} \Rightarrow \{\exists k.z=(y+k*x)\}$}
-\AxiomC{$\{\exists k.z = (y + k * x)\} y:=y - x \{\exists k.z=(y+k*x)\}$}
-\BinaryInfC{$\{y = z\}y:=y - x \{\exists k.z=(y+k*x)\}$}
+\AxiomC{$\{(\exists k.z = (y + k * x))\land b\} y:=y - x \{\exists k.z=(y+k*x)\}$}
+\BinaryInfC{$\{y = z\land b\}y:=y - x \{\exists k.z=(y+k*x)\}$}
 \UnaryInfC{$\{y=z\}while\ b\ do\ y:=y-x\ \{\exists k.z=(y+k*x) \}$}
 \end{prooftree}
 \end{itemize}
